@@ -30,7 +30,7 @@ This script performs non-regression tests on SEO elements of websites. It checks
 1. **Clone the Repository:**
 ```bash
    git clone https://github.com/PierreFECalvet/non_regression_tests.git
-   cd yourrepository
+   cd non_regression_tests
 ```
 
 2. **Install Dependencies:**
