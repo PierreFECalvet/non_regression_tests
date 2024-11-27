@@ -72,8 +72,8 @@ The script will prompt you for:
     http://anotherdomain.com, http://anotherdomain.com/target-page
 ```
 
-    Text File for Pages (pages.txt):
-    Each line should contain a single URL to a page to check. For example:
+Text File for Pages (pages.txt):
+Each line should contain a single URL to a page to check. For example:
 
 ```
     http://example.com/page1
