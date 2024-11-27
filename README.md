@@ -92,27 +92,26 @@ You will be prompted to choose whether to export differences and/or SEO data, an
 
 4. **Database Structure**
 **seo_data Table:**
-    id: Unique identifier.
-    timestamp: Date and time of data capture.
-    type: Either url (for pages) or link.
-    element: URL of the page or JSON array of [source_url, target_url].
-    data: JSON-formatted data specific to the element.
+- id: Unique identifier.
+- timestamp: Date and time of data capture.
+- type: Either url (for pages) or link.
+- element: URL of the page or JSON array of [source_url, target_url].
+- data: JSON-formatted data specific to the element.
 
 **differences Table:**
-    Same structure as seo_data, with an additional difference field describing detected changes.
+- Same structure as seo_data, with an additional difference field describing detected changes.
 
 **Notes**
-    Ensure Valid URLs: Make sure that the URLs provided are valid and accessible to avoid errors during HTTP requests.
-    Database File Location: The script creates a seo_data.db SQLite database file in the script's directory. Ensure you have write permissions in this directory.
-    Scheduling Interval: You can adjust the frequency of the task when prompted. The default is every 1 minute.
-    Concurrent Execution: If you have many URLs to check, consider increasing the interval to prevent overloading the target servers.
+- Ensure Valid URLs: Make sure that the URLs provided are valid and accessible to avoid errors during HTTP requests.
+- Database File Location: The script creates a seo_data.db SQLite database file in the script's directory. Ensure you have write permissions in this directory.
+- Scheduling Interval: You can adjust the frequency of the task when prompted. The default is every 1 minute.
+- Concurrent Execution: If you have many URLs to check, consider increasing the interval to prevent overloading the target servers.
 
 **Troubleshooting**
-    Common Errors:
-    TypeError: unsupported type for timedelta minutes component: str: Ensure that the frequency input is a valid integer.
-    sqlite3.OperationalError: no such table: seo_data: Make sure the database is initialized before running the script.
-    Logging:
-
+    **Common Errors:**
+- TypeError: unsupported type for timedelta minutes component: str: Ensure that the frequency input is a valid integer.
+- sqlite3.OperationalError: no such table: seo_data: Make sure the database is initialized before running the script.
+- Logging: 
 The script uses Python's logging module to output information. Check the console output for logs about the scraping process and any detected changes.
 
 **License**
