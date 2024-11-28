@@ -45,10 +45,10 @@ def find_xpath_link(source_url, target_url):
         response = requests.get(source_url, timeout=10)
         tree = html.fromstring(response.content)
 
-        # Trouver tous les liens avec href égal à target_url
+        # Find all links with href equal to target_url
         links = tree.xpath(f"//a[@href='{target_url}']")
 
-        # Extraire l'attribut 'robots' de la balise meta
+        # Extract the 'robots' attribute from the meta tag
         robots_meta = tree.xpath("//meta[@name='robots']/@content")
         robots_content = robots_meta[0] if robots_meta else None
 
@@ -56,7 +56,7 @@ def find_xpath_link(source_url, target_url):
             link = links[0]
             links_list = tree.xpath(f"//a[@href='{target_url}']/@href")
             xpath = link.getroottree().getpath(link)
-            # Vérifier la présence de l'attribut 'rel' sur la balise du lien
+            # Check for the presence of the 'rel' attribute on the link tag
             rel_attribute = link.get('rel')
             return xpath, links_list, rel_attribute, robots_content
         else:
