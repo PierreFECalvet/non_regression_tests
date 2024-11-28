@@ -15,7 +15,7 @@ This script performs non-regression tests on SEO elements of websites. It checks
   - Counts heading tags (`<h1>` to `<h6>`) and their content.
 
 - **Data Storage and Analysis:**
-  - Stores data in a SQLite database (`seo_data.db`).
+  - Stores data in a SQLite database (`seo_data.db` by default).
   - Compares current data with previous runs for the same element.
   - Logs differences in a `differences` table.
   - Exports differences and data to CSV files.
@@ -44,12 +44,13 @@ This script performs non-regression tests on SEO elements of websites. It checks
 
 1. **Running the Main Script**
 Execute the main script to start the non-regression testing:
-
 ```bash
-python basics_seo_non_regression_tests.py
+python basics_seo_non_regression_tests.py --db seo_data.db --links-csv "[YOURLINKFILE]".csv --pages-txt "[YOURPAGELIST]".txt --frequency 1
 ```
-2. **User Prompts**
-The script will prompt you for:
+
+- **DB:**
+    Default value for db is seo_data.db
+    Not mandatory but should be edited if needed (several instances in the same place)
 
 - **Links to Check:**
     Whether you want to provide a CSV file with source and target URLs.
@@ -61,10 +62,11 @@ The script will prompt you for:
 
 - **Frequency:**
     The frequency in minutes at which the script should run.
+    Default frequency is 1 but you should edit it when submitting large lists
 
 - **Input File Formats**
     CSV File for Links (links.csv):
-    The CSV file should contain the columns source and target. For example:
+    The CSV file should contain the columns source and target in this order. For example:
 
 ```
     source,target
@@ -80,7 +82,7 @@ Each line should contain a single URL to a page to check. For example:
     http://example.com/page2
 ```
 
-3. **Exporting Data**
+2. **Exporting Data**
 A separate script export_data.py is provided to export data from the database to CSV files.
 
 Run the script:
@@ -90,7 +92,7 @@ Run the script:
 
 You will be prompted to choose whether to export differences and/or SEO data, and whether to clear the tables after exporting.
 
-4. **Database Structure**
+3. **Database Structure**
 **seo_data Table:**
 - **id**: Unique identifier.
 - **timestamp**: Date and time of data capture.

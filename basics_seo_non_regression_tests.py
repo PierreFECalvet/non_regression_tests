@@ -286,32 +286,24 @@ def launch_functions(url_source, target_url, url_page, db_name='seo_data.db'):
             analyze_changes(prev_entry, last_entry, db_name=db_name)
     conn.close()
 
-def read_links_csv(csv_file):
-    """Read links from a CSV file, handling headers and validating URLs"""
+def read_links_csv(csv_file, skip_lines=1):
+    """Read links from a CSV file, skipping optional lines, validating URLs, and returning a list of tuples."""
     links = []
     try:
         with open(csv_file, newline='', encoding='utf-8') as f:
             reader = csv.reader(f)
-            headers = next(reader)
-            # Validating headers
-            if 'source' in headers and 'target' in headers:
-                reader = csv.DictReader(f, fieldnames=headers)
-                for row in reader:
-                    source_url = row['source'].strip()
-                    target_url = row['target'].strip()
-                    if source_url or target_url:
-                        links.append((source_url, target_url))
-            else:
-                # Resetting the file pointer to read the file again
-                f.seek(0)
-                reader = csv.reader(f)
-                for row in reader:
-                    source_url = row[0].strip() if len(row) >= 1 else ''
-                    target_url = row[1].strip() if len(row) >= 2 else ''
-                    if source_url or target_url:
-                        # Validating headers
-                        if source_url.lower() != 'source' and target_url.lower() != 'target':
-                            links.append((source_url, target_url))
+            # Skip specified number of lines
+            for _ in range(skip_lines):
+                next(reader)
+            for row in reader:
+                # Ensure each field starts with 'http'
+                if not len(row) >= 2:
+                    raise Exception(f"Row in CSV file {csv_file} does not have at least two columns: {row}")
+                source_url = row[0].strip()
+                target_url = row[1].strip()
+                if not source_url.startswith('http') or not target_url.startswith('http'):
+                    raise Exception(f"Invalid URL in CSV file {csv_file}: {row}")
+                links.append((source_url, target_url))
     except Exception as e:
         logging.error(f"Error reading CSV file {csv_file}: {e}")
     return links
