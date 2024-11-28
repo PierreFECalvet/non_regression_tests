@@ -1,6 +1,7 @@
 import sqlite3
 import csv
 import os
+import json
 
 def export_differences_to_csv(db_name='seo_data.db', csv_filename='differences.csv'):
     conn = sqlite3.connect(db_name)
@@ -26,13 +27,19 @@ def export_seo_data_to_csv(db_name='seo_data.db', csv_filename='seo_data.csv'):
     cursor.execute('SELECT * FROM seo_data')
     rows = cursor.fetchall()
     if rows:
-        # Obtenir les noms des colonnes
+        # Get column names
         column_names = [description[0] for description in cursor.description]
-        # Écrire dans le fichier CSV
+        # Write to the CSV file
         with open(csv_filename, 'w', newline='', encoding='utf-8') as csvfile:
             csv_writer = csv.writer(csvfile)
-            csv_writer.writerow(column_names)
-            csv_writer.writerows(rows)
+            # Write headers
+            headers = column_names + ['parsed_data']
+            csv_writer.writerow(headers)
+            for row in rows:
+                # Parse the JSON data and flatten it
+                data = json.loads(row[4])  # Assuming 'data' is the 5th column
+                parsed_data = json.dumps(data)
+                csv_writer.writerow(list(row) + [parsed_data])
         print(f"SEO data has been exported to {csv_filename}.")
     else:
         print("No SEO data to export.")
@@ -60,7 +67,7 @@ def keep_last_seo_data_entries(db_name='seo_data.db'):
     conn.close()
     print("The 'seo_data' table has been cleaned to keep only the last entry for each element.")
 
-if __name__ == '__main__':
+def main():
     db_name = 'seo_data.db'
 
     execute_differences = input("Do you want to export the differences? (y/n) : ").lower()
@@ -77,3 +84,6 @@ if __name__ == '__main__':
         clear_seo = input("Do you want to clean the 'seo_data' table after export (keep only the last entry for each element)? (y/n) : ").lower()
         if clear_seo == 'y':
             keep_last_seo_data_entries(db_name=db_name)
+
+if __name__ == '__main__':
+    main()
